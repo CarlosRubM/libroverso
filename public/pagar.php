@@ -27,7 +27,7 @@ $total_pagar = $pedido['total'];
 
 // 2. Configuración de URLs (AJÚSTALAS A TU RUTA LOCALHOST EXACTA)
 // Si tu proyecto está en http://localhost/libroverso/public/ ...
-$base_url = "http://libroverso.local:8080"; 
+$base_url = "http://libroverso.local"; 
 $url_exito = $base_url . "/pago_exito.php?id_pedido=" . $id_pedido;
 $url_cancelado = $base_url . "/pago_cancelado.php";
 
