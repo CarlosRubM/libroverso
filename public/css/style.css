@@ -1,0 +1,979 @@
+/* =========================================== */
+/* ESTILOS DE LA BARRA DE NAVEGACIÓN      */
+/* =========================================== */
+
+/* -- Paleta de Colores y Fuentes -- */
+:root {
+    --color-primario: #007bff;
+    --color-secundario: #28a745;
+    --color-fondo: #f8f9fa;
+    --color-texto: #333;
+    --color-texto-sec: #666;
+    --color-borde: #ddd;
+    --color-blanco: #fff;
+    --fuente-principal: 'Nunito', sans-serif;
+}
+
+body {
+    font-family: var(--fuente-principal);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    /* Añade espacio superior para la navbar fija */
+    padding-top: 70px; 
+    margin: 0;
+}
+
+/* -- Estructura de la Barra -- */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Logo a la izq, links a la der */
+    align-items: center;
+    background-color: var(--color-blanco);
+    padding: 0 5%; /* 5% de padding a los lados */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 100%;
+    height: 70px;
+    position: fixed; /* Fija en la parte superior */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box; /* Para que el padding no afecte el ancho */
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primario);
+    text-decoration: none;
+}
+
+/* -- Contenedor de Enlaces -- */
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Espacio entre cada enlace */
+}
+
+.navbar .nav-links a {
+    text-decoration: none;
+    color: var(--color-texto-sec);
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+    display: inline-flex; /* Para alinear iconos y texto */
+    align-items: center;
+}
+
+.navbar .nav-links a i {
+    margin-right: 6px; /* Espacio para el icono del carrito */
+}
+
+.navbar .nav-links a:hover {
+    color: var(--color-primario);
+}
+
+/* -- Saludo del usuario (Ej: ¡Hola, Admin!) -- */
+.navbar .nav-links .nav-user-greet {
+    color: var(--color-texto-sec);
+    font-size: 0.95rem;
+    margin-right: -10px; /* Lo acerca al botón "Cerrar Sesión" */
+}
+
+/* -- Botón Principal (Login, Cerrar Sesión) -- */
+.navbar .nav-links .nav-button {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.navbar .nav-links .nav-button:hover {
+    background-color: #0056b3; /* Azul más oscuro */
+    color: var(--color-blanco);
+    transform: scale(1.05);
+}
+
+/* -- Botón Secundario (Registrarse) -- */
+.navbar .nav-links .nav-button-outline {
+    background-color: transparent;
+    color: var(--color-primario);
+    border: 2px solid var(--color-primario);
+    padding: 6px 14px; /* Menos padding por el borde */
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s;
+}
+.navbar .nav-links .nav-button-outline:hover {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+
+/* =========================================== */
+/* ESTILOS DE SECCIÓN HORIZONTAL (ESTILO TIENDA) */
+/* =========================================== */
+
+.book-section {
+    margin-bottom: 20px; /* Espacio entre estanterías */
+    overflow: hidden; /* Evita desbordes extraños */
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-texto);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-borde);
+}
+
+.horizontal-scroll-container {
+    display: flex; /* La clave: alinea los hijos en fila */
+    overflow-x: auto; /* La magia: habilita el scroll horizontal */
+    overflow-y: hidden; /* Oculta el scroll vertical */
+    padding: 20px 10px; /* Espacio para que se vea la sombra de las tarjetas */
+    
+    /* Opcional: Oculta la barra de scroll (se sigue pudiendo scrollar) */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+    display: none; /* WebKit (Chrome, Safari, Opera) */
+}
+
+/* Opcional: "Ajuste" al inicio de cada libro al soltar el scroll */
+.horizontal-scroll-container {
+   scroll-snap-type: x mandatory;
+}
+
+/* Esta será la NUEVA tarjeta de libro, optimizada para scroll horizontal.
+   Es diferente de .book-item para no romper el layout de grid si lo usas en otro sitio.
+*/
+.book-card-h {
+    /* Define un tamaño fijo para que los elementos se desborden y fuercen el scroll */
+    flex: 0 0 240px; /* NO crecer, NO encoger, base de 240px */
+    
+    margin-right: 20px; /* Espacio entre libros */
+    
+    /* Mismos estilos de tarjeta que ya tenías */
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    background-color: var(--color-blanco);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    
+    /* Ajuste para el scroll-snap */
+    scroll-snap-align: start;
+}
+
+.book-card-h:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+/* Reutilizamos las clases internas de la tarjeta que ya definimos
+  (img, h3, autor, price, etc.) pero las aplicamos dentro de .book-card-h 
+*/
+.book-card-h .card-img-top {
+    width: 100%;
+    height: 250px; /* Altura fija para la imagen */
+    object-fit: cover;
+    border-radius: 8px 8px 0 0; /* Redondeo solo arriba */
+    padding: 15px; /* Padding para que la portada no toque los bordes */
+    box-sizing: border-box; /* El padding no aumenta el tamaño */
+    transition: transform 0.3s;
+}
+.book-card-h:hover .card-img-top {
+    transform: scale(1.03);
+}
+
+.book-card-h .card-body {
+    padding: 0 20px 20px 20px; /* Padding para el texto */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* El cuerpo crece para empujar el botón abajo */
+    text-align: left;
+}
+
+.book-card-h .card-body h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.book-card-h .card-body .autor {
+    font-size: 0.9rem;
+    color: var(--color-texto-sec);
+    margin-bottom: 10px;
+}
+.book-card-h .card-body .price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-primario);
+    margin-top: auto; /* Empuja el precio al fondo del espacio disponible */
+    padding-top: 10px;
+    text-align: right;
+}
+
+.book-card-h .card-footer {
+    padding: 0 20px 20px 20px; /* Padding para el botón */
+}
+/* Reutilizamos el botón de comprar que ya tenías */
+.book-card-h .btn-comprar {
+    display: block;
+    width: 100%;
+    padding: 10px;
+}
+
+/* =========================================== */
+/* ESTILOS DE LA PAGINA PRINCIPAL     */
+/* =========================================== */
+
+
+    /* Estilos para la página de inicio */
+.hero {
+    /* Esta es la URL de reemplazo */
+    background: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1600') no-repeat center center/cover;
+    
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+    min-height: 400px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.hero::before { /* Capa oscura para mejorar la legibilidad del texto */
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5); /* Oscurece la imagen de fondo */
+        z-index: 1;
+}
+    .hero-content {
+        position: relative;
+        z-index: 2; /* Asegura que el contenido esté por encima de la capa oscura */
+    }
+    .hero h1 {
+        font-size: 3.5em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+    .hero p {
+        font-size: 1.5em;
+        margin-bottom: 30px;
+        max-width: 800px;
+        line-height: 1.6;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    }
+    .hero-buttons .btn {
+        display: inline-block;
+        background-color: #007bff; /* Color azul para los botones */
+        color: white;
+        padding: 15px 30px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1em;
+        margin: 0 10px;
+        transition: background-color 0.3s ease;
+    }
+    .hero-buttons .btn:hover {
+        background-color: #0056b3; /* Tono más oscuro al pasar el ratón */
+    }
+
+    .featured-section {
+        padding: 40px 20px;
+        text-align: center;
+        background-color: #f9f9f9;
+    }
+    .featured-section h2 {
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        color: #333;
+    }
+    .book-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 30px;
+    }
+    .book-item {
+        background-color: white;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        width: 250px;
+        text-align: left;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .book-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    .book-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+    .book-item h3 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+        color: #007bff;
+    }
+    .book-item p {
+        font-size: 0.9em;
+        color: #666;
+        line-height: 1.5;
+    }
+    .book-item .price {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #28a745; /* Color verde para precios */
+        margin-top: 15px;
+    }
+
+    /* Estilos generales (podrían ir en style.css) */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        background-color: #eef2f5;
+        color: #333;
+    }
+    main {
+        padding: 0; /* Eliminar el padding por defecto si el header lo tiene */
+    }
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        background-color: #343a40;
+        padding: 10px 0;
+    }
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+        display: block;
+    }
+    nav ul li a:hover {
+        background-color: #495057;
+        border-radius: 5px;
+    }
+    header h1 {
+        text-align: center;
+        color: #333;
+        padding: 20px 0;
+    }
+    footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #343a40;
+        color: white;
+        margin-top: 40px;
+    }
+
+    /*LOGIN*/
+    .container {
+        max-width: 500px; margin: 50px auto; padding: 20px;
+        border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .container h2 { text-align: center; margin-bottom: 20px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .form-group input[type="submit"] { background-color: #007bff; color: white; cursor: pointer; }
+    .form-group input[type="submit"]:hover { background-color: #007bff; }
+    .error {
+        background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+        padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center;
+    }
+    
+
+    /* ========== ESTILOS PARA MENSAJE DE ÚLTIMO LOGIN ========== */
+.ultimo-login-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    animation: slideDown 0.4s ease-out;
+}
+
+.ultimo-login-info i {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.ultimo-login-info strong {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ultimo-login-info {
+        font-size: 0.85rem;
+        padding: 12px 16px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+}
+
+
+/* ========== ESTILOS PARA DASHBOARD ========== */
+
+/* Mensaje de bienvenida */
+.welcome-message {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.welcome-message h1 {
+    margin: 0 0 10px 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.welcome-message p {
+    margin: 0;
+    font-size: 1.1rem;
+    opacity: 0.95;
+}
+
+.dashboard-container {
+    width: 100%;
+    max-width: 1200px; /* Opcional: un ancho máximo para pantallas muy grandes */
+    margin: 0 auto; /* Centra el contenido */
+    padding: 25px;/* Añade espacio interno */
+    box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
+}
+
+/* Mensaje de último login */
+.ultimo-login-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    animation: slideDown 0.4s ease-out;
+}
+
+.ultimo-login-info i {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.ultimo-login-info strong {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+/* Mensaje de error */
+.error-db {
+    background-color: #fee;
+    color: #c33;
+    padding: 15px 20px;
+    border-left: 4px solid #c33;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.error-db i {
+    font-size: 1.2rem;
+}
+
+/* Mensaje de sin libros */
+.no-libros {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    margin: 40px 0;
+}
+
+.no-libros i {
+    font-size: 4rem;
+    color: #adb5bd;
+    margin-bottom: 20px;
+}
+
+.no-libros p {
+    font-size: 1.2rem;
+    color: #495057;
+    margin: 10px 0;
+}
+
+.no-libros .subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Títulos de sección con iconos */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.section-title i {
+    color: #6366f1;
+}
+
+/* Animación de entrada */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-message h1 {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-message p {
+        font-size: 0.95rem;
+    }
+    
+    .ultimo-login-info {
+        font-size: 0.85rem;
+        padding: 12px 16px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+     /* Estilos básicos para el formulario */
+    .container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        background-color: #fff;
+    }
+    .container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group select { /* Añadido select */
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
+    }
+    .form-group input[type="submit"] {
+        width: 100%;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+    .form-group input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    .message {
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+
+/** ADMIN*/
+
+.admin-actions {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 30px;
+        margin-top: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        display: flex;
+        gap: 20px; /* Espacio entre los botones */
+        flex-wrap: wrap; /* Para que se ajusten en pantallas pequeñas */
+        justify-content: center;
+    }
+
+    /* --- REGLA BASE --- */
+    /* Estilos comunes para AMBOS botones */
+    .admin-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 5px;
+        text-decoration: none !important; /* ¡Importante para quitar el subrayado! */
+        font-weight: 700;
+        font-size: 1rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+
+    /* Botón principal (azul) - AHORA CON BORDE */
+    .admin-button.primary {
+        background-color: transparent !important; /* Fondo transparente */
+        color: var(--color-primario, #007bff) !important; /* Texto azul */
+        border: 2px solid var(--color-primario, #007bff) !important; /* Borde azul */
+    }
+    .admin-button.primary:hover {
+        background-color: var(--color-primario, #007bff); /* Se rellena al pasar el ratón */
+        color: var(--color-blanco, #fff); /* Texto blanco al pasar el ratón */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Botón de peligro (ej. cerrar sesión) - AHORA CON BORDE */
+    .admin-button.danger {
+        background-color: transparent !important; /* Fondo transparente */
+        color: #dc3545 !important; /* Texto rojo */
+        border: 2px solid #dc3545 !important; /* Borde rojo */
+    }
+    .admin-button.danger:hover {
+        background-color: #dc3545; /* Se rellena al pasar el ratón */
+        color: var(--color-blanco, #fff); /* Texto blanco al pasar el ratón */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+    }
+
+    /* =========================================== */
+/* ESTILOS DEL CARRITO DE COMPRA              */
+/* =========================================== */
+/* =========================================
+   ESTILOS GENERALES Y CONTENEDOR
+   ========================================= */
+.carrito-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.carrito-header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+.carrito-header h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* =========================================
+   LAYOUT (COLUMNAS)
+   ========================================= */
+.carrito-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start; /* Evita que la columna lateral se estire innecesariamente */
+}
+
+.carrito-items {
+    flex: 2; /* Ocupa 2/3 del espacio */
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.carrito-resumen {
+    flex: 1; /* Ocupa 1/3 del espacio */
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    position: sticky; /* Hace que el resumen te siga al bajar */
+    top: 20px;
+}
+
+/* =========================================
+   ITEMS DEL CARRITO (Lista)
+   ========================================= */
+.carrito-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.carrito-item:last-child {
+    border-bottom: none;
+}
+
+.carrito-item:hover {
+    background-color: #fcfcfc;
+}
+
+/* Imagen */
+.item-imagen img {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Detalles (Título/Autor) */
+.item-detalles {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.item-detalles h3 {
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.text-muted {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Input Cantidad */
+.item-cantidad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.item-cantidad label {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.input-cantidad {
+    width: 60px;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.input-cantidad:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Precio Subtotal */
+.item-subtotal {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    min-width: 80px;
+    text-align: right;
+    margin-right: 20px;
+}
+
+/* Botón Eliminar */
+.item-eliminar a {
+    color: #dc3545;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
+
+.item-eliminar a:hover {
+    color: #a71d2a;
+}
+
+/* =========================================
+   RESUMEN (SIDEBAR)
+   ========================================= */
+.carrito-resumen h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.precio-total {
+    font-size: 1.5rem;
+    color: #28a745;
+    font-weight: 800;
+}
+
+.btn-pagar {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: #28a745;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 20px 0;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-pagar:hover {
+    background-color: #218838;
+}
+
+/* =========================================
+   ESTADO VACÍO Y ERRORES
+   ========================================= */
+.carrito-vacio {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.carrito-vacio i {
+    color: #dee2e6;
+    margin-bottom: 20px;
+}
+
+.btn-seguir-comprando {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.error-db {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+}
+
+/* =========================================
+   RESPONSIVE (MÓVIL)
+   ========================================= */
+@media (max-width: 768px) {
+    .carrito-layout {
+        flex-direction: column;
+    }
+
+    .carrito-items, 
+    .carrito-resumen {
+        width: 100%; /* Ocupan todo el ancho en móvil */
+    }
+
+    .carrito-item {
+        flex-wrap: wrap; /* Permite que los elementos bajen si no caben */
+        justify-content: center;
+        text-align: center;
+    }
+
+    .item-imagen {
+        margin-bottom: 10px;
+    }
+
+    .item-detalles {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .item-cantidad, 
+    .item-subtotal, 
+    .item-eliminar {
+        margin: 10px; /* Separación en móvil */
+    }
+}
+
+}
